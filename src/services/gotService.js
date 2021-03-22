@@ -27,7 +27,7 @@ export default class GotService {
   };
 
   getCharactersByPage = async (page, items) => {
-    const result = await this.getResource(`/characters?page=${page}&Size=${items}`);
+    const result = await this.getResource(`/characters?page=${page}&pageSize=${items}`);
     return result.map(this._transformCharacter);
   };
 
@@ -46,7 +46,7 @@ export default class GotService {
   };
 
   getBooksByPage = async (page, items) => {
-    const result = await this.getResource(`/books?page=${page}&Size=${items}`);
+    const result = await this.getResource(`/books?page=${page}&pageSize=${items}`);
     return result.map(this._transformBook);
   };
 
@@ -65,7 +65,7 @@ export default class GotService {
   };
 
   getHousesByPage = async (page, items) => {
-    const result = await this.getResource(`/houses?page=${page}&Size=${items}`);
+    const result = await this.getResource(`/houses?page=${page}&pageSize=${items}`);
     return result.map(this._transformHouse);
   };
 

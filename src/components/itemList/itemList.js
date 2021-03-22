@@ -1,58 +1,40 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import Spinner from "../spinner/spinner";
 import './itemList.css';
 import IdGenerator from "../../utils/idGenerator";
 
-export default class ItemList extends Component {
+function ItemList({ getData, request, onItemSelected, renderItem }) {
+    const [itemList, setItemList] = useState([]);
 
-    state = {
-        itemList: null,
-        //request: this.props.request
-        // request: {
-        //     page: this.props.request.page,
-        //     size: this.props.request.size
-        // }
-    };
+    useEffect(() => {
+        const { page, pageSize } = request;
+        getData(page, pageSize)
+            .then(geedItemList => setItemList(geedItemList));
+    }, []);
 
-    componentDidMount() {
-        const { getData, request: {page, size} } = this.props;
-
-        //const { page, size } = this.state.request;
-        getData(page, size)
-            .then((itemList) => {
-                this.setState({
-                    itemList
-                });
-            });
-    }
-
-    renderItems(arr) {
+    function renderItems(arr) {
         return arr.map((item) => {
-
-            const {id} = item;
-            const label = this.props.renderItem(item);
+            const { id } = item;
+            const label = renderItem(item);
             return (
                 <li
                     key={IdGenerator()}
                     className="list-group-item"
-                    onClick={() => this.props.onItemSelected(id)}
+                    onClick={() => onItemSelected(id)}
                 >{label}
                 </li>
             );
         });
     }
 
-    render() {
+    if (!itemList) return <Spinner />;
 
-        const { itemList } = this.state;
-
-        if (!itemList) return <Spinner />;
-        const items = this.renderItems(itemList);
-
-        return (
-            <ul className="item-list list-group">
-                {items}
-            </ul>
-        );
-    }
+    const items = renderItems(itemList);
+    return (
+        <ul className="item-list list-group">
+            {items}
+        </ul>
+    );
 }
+
+export default ItemList;

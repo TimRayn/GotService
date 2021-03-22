@@ -1,5 +1,5 @@
 function idGenerator() {
-  return Date.now() * Math.random().toString(36);
+  return (Date.now() * Math.random() * 1000000).toString(36);
 };
 
 export default idGenerator;
